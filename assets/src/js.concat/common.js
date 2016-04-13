@@ -1,6 +1,7 @@
-var a, b, c;
+$(window).load(function() { 
+    $("#loader").delay(400).fadeOut("slow"); 
+});
 
-a = 'Gulp';
-b = ' Hello';
+jQuery(document).ready(function($) {
 
-c = a + b;
+});

@@ -16,23 +16,31 @@ var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 var babel = require('gulp-babel');
 var prettify = require('gulp-prettify');
-var path = require('path');
+var pathh = require('path');
+var jade = require('gulp-jade');
+var gulpIgnore = require('gulp-ignore');
 
-var templates_dir = path.join(__dirname, '../') + '**/*.html';
 
-gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'html-prettify'], function () {
+// ----------------------------------------------------------------
+
+var templates_dir = pathh.join(__dirname, '../') + '**/*.html';
+var jade_except = '_*.jade';
+
+// ----------------------------------------------------------------
+
+gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade'], function () {
     gulp.watch("./assets/src/sass/**/*.scss", ['sass']);
     gulp.watch("./assets/src/js/**/*.js", ['compressjs']);
     gulp.watch("./assets/src/js.concat/**/*.js", ['concatjs']);
     gulp.watch("./assets/src/libs/**", ['libs']);
     gulp.watch("./assets/src/images/**", ['compressimages']);
-    gulp.watch('./assets/src/templates/**/*.html', ['html-prettify']);
+    gulp.watch('./assets/src/templates/**/*.jade', ['jade']);
 });
 
-gulp.task('prod', ['sass', 'compressjs', 'concatjs', 'libs', 'compressimages']);
+gulp.task('prod', ['sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade']);
 
-gulp.task('clean', function () {
-    del(['./dist/**'], function (err, deletedFiles) {
+gulp.task('clear', function () {
+    del(['./assets/dist/**'], function (err, deletedFiles) {
     console.log('Files deleted!'); });
 });
 
@@ -49,7 +57,7 @@ gulp.task('sass', function () {
     .pipe(autoprefixer())
     .pipe(sourcemaps.init())
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./dist/css/'))
+    .pipe(gulp.dest('./assets/dist/css/'))
     .pipe(browserSync.stream())
 });
 
@@ -59,7 +67,7 @@ gulp.task('compressjs', function () {
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     // .pipe(jshint.reporter('fail'))
-    .pipe(gulp.dest('./dist/js/'))
+    .pipe(gulp.dest('./assets/dist/js/'))
     .pipe(browserSync.stream())
 });
 
@@ -70,15 +78,15 @@ gulp.task('concatjs', function () {
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     // .pipe(jshint.reporter('fail'))
-    .pipe(concat('combined.js'))
-    .pipe(gulp.dest('./dist/js/'))
+    .pipe(concat('concat.js'))
+    .pipe(gulp.dest('./assets/dist/js/'))
     .pipe(browserSync.stream())
 });
 
 
 gulp.task('libs', function() {
   gulp.src('./assets/src/libs/**')
-    .pipe(gulp.dest('./dist/libs/'))
+    .pipe(gulp.dest('./assets/dist/libs/'))
     .pipe(browserSync.stream())
 });
 
@@ -91,20 +99,28 @@ gulp.task('compressimages', function() {
         svgoPlugins: [{removeViewBox: false}],
         use: [pngquant()]
     }))
-    .pipe(gulp.dest('./dist/images/'))
+    .pipe(gulp.dest('./assets/dist/images/'))
     .pipe(browserSync.stream())
 });
 
-gulp.task('html-prettify', function() {
-  gulp.src('src/templates/*.html')
-    .pipe(prettify({indent_size: 3}))
+
+gulp.task('jade', function() { 
+  gulp.src('./assets/src/templates/*.jade')
+    .pipe(gulpIgnore.exclude(jade_except))
+    .pipe(jade()) 
     .pipe(gulp.dest('./'))
 });
 
+// gulp.task('html-prettify', function() {
+//   gulp.src('src/templates/*.html')
+//     .pipe(prettify({indent_size: 3}))
+//     .pipe(gulp.dest('./'))
+// });
+
 // ------------------ UNITY DJANGO TASKS ----------------------------
 
-gulp.task('libs', function() {
-  gulp.src('./assets/src/libs/**')
-    .pipe(gulp.dest('./dist/libs/'))
-    .pipe(browserSync.stream())
-});
+// gulp.task('libs', function() {
+//   gulp.src('./assets/src/libs/**')
+//     .pipe(gulp.dest('./assets/dist/libs/'))
+//     .pipe(browserSync.stream())
+// });
