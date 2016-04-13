@@ -28,7 +28,7 @@ var jade_except = '_*.jade';
 
 // ----------------------------------------------------------------
 
-gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade', 'html'], function () {
+gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade', 'html', 'fonts'], function () {
     gulp.watch("./assets/src/sass/**/*.scss", ['sass']);
     gulp.watch("./assets/src/js/**/*.js", ['compressjs']);
     gulp.watch("./assets/src/js.concat/**/*.js", ['concatjs']);
@@ -36,6 +36,7 @@ gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 
     gulp.watch("./assets/src/images/**", ['compressimages']);
     gulp.watch('./assets/src/templates/**/*.jade', ['jade']);
     gulp.watch('./assets/src/templates/**/*.html', ['html']);
+    gulp.watch('./assets/src/fonts/**', ['fonts']);
 });
 
 gulp.task('prod', ['sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade']);
@@ -66,7 +67,7 @@ gulp.task('sass', function () {
 gulp.task('compressjs', function () {
   gulp.src('./assets/src/js/**/*.js')
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
+    // .pipe(jshint.reporter('jshint-stylish'))
     // .pipe(jshint.reporter('fail'))
     .pipe(gulp.dest('./assets/dist/js/'))
     .pipe(browserSync.stream())
@@ -77,7 +78,7 @@ gulp.task('compressjs', function () {
 gulp.task('concatjs', function () {
   gulp.src('./assets/src/js.concat/**/*.js')
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
+    // .pipe(jshint.reporter('jshint-stylish'))
     // .pipe(jshint.reporter('fail'))
     .pipe(concat('concat.js'))
     .pipe(gulp.dest('./assets/dist/js/'))
@@ -88,6 +89,13 @@ gulp.task('concatjs', function () {
 gulp.task('libs', function() {
   gulp.src('./assets/src/libs/**')
     .pipe(gulp.dest('./assets/dist/libs/'))
+    .pipe(browserSync.stream())
+});
+
+
+gulp.task('fonts', function() {
+  gulp.src('./assets/src/fonts/**')
+    .pipe(gulp.dest('./assets/dist/fonts/'))
     .pipe(browserSync.stream())
 });
 
@@ -119,7 +127,7 @@ gulp.task('jade', function() {
 // });
 
 gulp.task('html', function() {
-  return gulp.src('src/templates/**/*.html')
+  gulp.src('./assets/src/templates/**/*.html')
     .pipe(htmlmin({collapseWhitespace: true, minifyCSS: true, minifyJS: true, removeComments: true}))
     .pipe(gulp.dest('./'))
 });
