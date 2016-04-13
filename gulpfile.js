@@ -19,7 +19,7 @@ var prettify = require('gulp-prettify');
 var pathh = require('path');
 var jade = require('gulp-jade');
 var gulpIgnore = require('gulp-ignore');
-
+var htmlmin = require('gulp-htmlmin');
 
 // ----------------------------------------------------------------
 
@@ -28,13 +28,14 @@ var jade_except = '_*.jade';
 
 // ----------------------------------------------------------------
 
-gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade'], function () {
+gulp.task('default', ['browser-sync', 'sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade', 'html'], function () {
     gulp.watch("./assets/src/sass/**/*.scss", ['sass']);
     gulp.watch("./assets/src/js/**/*.js", ['compressjs']);
     gulp.watch("./assets/src/js.concat/**/*.js", ['concatjs']);
     gulp.watch("./assets/src/libs/**", ['libs']);
     gulp.watch("./assets/src/images/**", ['compressimages']);
     gulp.watch('./assets/src/templates/**/*.jade', ['jade']);
+    gulp.watch('./assets/src/templates/**/*.html', ['html']);
 });
 
 gulp.task('prod', ['sass', 'compressjs', 'concatjs', 'libs', 'compressimages', 'jade']);
@@ -105,7 +106,7 @@ gulp.task('compressimages', function() {
 
 
 gulp.task('jade', function() { 
-  gulp.src('./assets/src/templates/*.jade')
+  gulp.src('./assets/src/templates/**/*.jade')
     .pipe(gulpIgnore.exclude(jade_except))
     .pipe(jade()) 
     .pipe(gulp.dest('./'))
@@ -116,6 +117,12 @@ gulp.task('jade', function() {
 //     .pipe(prettify({indent_size: 3}))
 //     .pipe(gulp.dest('./'))
 // });
+
+gulp.task('html', function() {
+  return gulp.src('src/templates/**/*.html')
+    .pipe(htmlmin({collapseWhitespace: true, minifyCSS: true, minifyJS: true, removeComments: true}))
+    .pipe(gulp.dest('./'))
+});
 
 // ------------------ UNITY DJANGO TASKS ----------------------------
 
