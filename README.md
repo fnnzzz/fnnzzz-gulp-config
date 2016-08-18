@@ -11,8 +11,8 @@ My personal gulp config for a quick start of development.
 * Bower
 * Compress images (gif, png, jpg, svg)
 
-*- all source files, with which you'll be working in a folder 'assets/src'
-- all outputed files will be stored in 'dist' folder*
+- all source files, with which you'll be working in a folder 'assets/src'
+- all outputed files will be stored in 'dist' folder
 
 ### Project structure ###
 
