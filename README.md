@@ -1,50 +1,48 @@
 # Gulp config for static projects #
 
-Галп конфиг для быстрой и удобной разработки статических проектов (без Django)
+My personal gulp config for a quick start of development.
 
-### Что под капотом? ###
+### Under the hood: ###
 
-* Livereload для разработки (browser-sync)
+* Livereload (browser-sync)
 * SASS to CSS (with mapssource)
-* Объединение и минифицирование JS
-* JSHint для JS
+* Minify and concat JS
+* JSHint for JS
 * Bower
-* Сжатие картинок (gif, png, jpg, svg)
+* Compress images (gif, png, jpg, svg)
 
-*- Вся магия происходит в папке 'assets'
-- В 'assets' есть директория 'dev', в ней сложены все наши сорцы. В корне можем хранить наши хтмл-странички, фавиконки и т.д.
-- Весь аутпут будет в папке 'dist'*
+*- all source files, with which you'll be working in a folder 'assets/src'
+- all outputed files will be stored in 'dist' folder*
 
-### Структура проекта ###
+### Project structure ###
 
-* **assets/dev/images** - для картинок (кладём туда все наши gif, png, jpg, svg)
-* **assets/dev/js** - для скриптов (туда кладём только пользовательские скрипты. Никаких jquery и т.п. - об этом позже). Скрипты автоматически будут минифицироваться и проходить через JSHint.
-* **assets/dev/js.concat** - скрипты, которые нужно объединить в один файл. На выходе будет файлик 'combined.js' в папке 'assets/dist/js'
-* **assets/dev/libs** - все библиотечки, скрипты и т.д. (example: jquery, owlslider, hmtl-shiv). Там есть и bower, через который всё это тоже можно подключать (что я и рекомендую). 
-Аутпут будет в папку 'assets/dist/libs'
-* **assets/dev/sass** - для SASS-файлов, в атупут будет падать и соурс-мэп. 
+* **assets/dev/images** - for images (gif, png, jpg, svg)
+* **assets/dev/js** - for custom scripts (not libs like jquery and etc), these scripts will be minified and checked by JSHint.
+* **assets/dev/js.concat** - all scripts, that need be combined into one js-file. In output it will file 'combined.js' in 'assets/dist/js' dir.
+* **assets/dev/libs** - all libs (example: jquery, owlslider, hmtl-shiv). In in this folder there Bower, with which you can download libs. Output — 'assets/dist/libs'
+* **assets/dev/sass** - for SASS-files.
 
-### Как с этим работать? ###
+### How it work? ###
 
-1. Пуллите этот репозиторий.
-2. Устанавливаете gulp глобально.
-3. Делаете "npm install" (все пакеты подтянутся из "package.json")
-4. После этого выполняете команду "gulp". Весь аутпут будет в папочке "dist".
+1. Pull this repo.
+2. Install gulp globally (npm i gulp -g).
+3. Make "npm install" (all packages will be installed from "package.json" list)
+4. Then run "gulp" command. All outputed files will be stored in "dist" dir.
 
-Вот собственно и всё!
+ENJOY!
 
 
 * * * * * * * * * * * * * * *
 
-### Как включить livereload? ###
+### How enable livereload? ###
 
-* Открываете gulpfile.js
-* Редактируете строчку *browserSync.init({  proxy: "localhost" });* где указываете нужный урл.
-* После этого открываете указанный урл с портом (порт 300х), который будет написан в консоли при исполнении 'gulp': например, *http://myproject.vlad.dev.itcg.ua:3005/*
-* Всё. Галп следит за всеми изменениями во всех файлах и при надобности автоматически рефрешится.
+* Open `gulpfile.js`
+* End edit *browserSync.init({  proxy: "localhost" });* where write needed url.
+* Then open this URL in browser with port written into the console (port 300x), for example: *http://localhost:3005/*
+* That's all. Now livereload watchin on all changes in 'src' folder and refresh page if is needed! Enjoy!
 
 * * * * * * * * * * * * * * *
 
-### Для продакшна есть команда 'gulp prod', которая просто сделает все нужные таски и упадёт (без вотчей).
-### Для очистки папочки 'dist' есть команда 'gulp clean' (полезно иногда выполнять - в "дисте" может остаться еще то, что вы уже давно выпилили из "дэва"
-### Папки "dist" и "node_modules" в гитигноре, поэтому на разных машинах нужно проект пересобирать.
+### For production: 'gulp prod' (without watches).
+### For cleaning `dist` folder: `gulp clean` (useful to do from time to time).
+### Dirs `dist` and `node_modules` into `.gitignore`, so the project should be to rebuild on different machines
