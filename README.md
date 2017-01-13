@@ -47,3 +47,5 @@ ENJOY!
 ### For production: 'gulp prod' (without watches).
 ### For cleaning `dist` folder: `gulp clean` (useful to do from time to time).
 ### Dirs `dist` and `node_modules` into `.gitignore`, so the project should be to rebuild on different machines
+
+mac was here
